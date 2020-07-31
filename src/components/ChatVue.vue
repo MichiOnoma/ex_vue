@@ -66,6 +66,9 @@ export default {
       const ref_message = firebase.database().ref('message')
       if (user) {
         this.chat = []
+	      ref_message.push({
+  	        message: this.user.displayName + "さんがログインしました。",
+    	      name: "管理人"});
         // message に変更があったときのハンドラを登録
         ref_message.limitToLast(10).on('child_added', this.childAdded)
       } else {
@@ -89,12 +92,7 @@ export default {
     // ログイン処理
     doLogin() {
       const provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithPopup(provider).then(      
-      function(result){
-	      firebase.database().ref('message').push({
-  	        message: this.user.displayName + "さんがログインしました。",
-    	      name: "管理人"})
-        })
+      firebase.auth().signInWithPopup(provider);
     },
     // ログアウト処理
     doLogout() {
